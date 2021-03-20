@@ -1,5 +1,7 @@
-class surface {
-	constructor(pointA, pointB) {
+class surface 
+{
+	constructor(pointA, pointB) 
+	{
 		this.pointA = pointA;
 		this.pointB = pointB;
 	}
@@ -41,7 +43,7 @@ function find_angle(p1,p2)
 }
 function angle_between(A,B)
 {
-	return Math.asin((A[1]*B[1]+A[0]*B[0])/Math.sqrt(A[1]*A[1]+A[0]*A[0])/Math.sqrt(B[1]*B[1]+B[0]*B[0]));
+	return Math.acos((A[1]*B[1]+A[0]*B[0])/Math.sqrt(A[1]*A[1]+A[0]*A[0])/Math.sqrt(B[1]*B[1]+B[0]*B[0]));
 }
 let x = 0;
 let y = 0;
@@ -65,7 +67,8 @@ let height = canvas.offsetHeight;
 let running=true;
 while (true)
 {
-	document.addEventListener("keydown", function (event) {
+	document.addEventListener("keydown", function (event)
+	{
 		if (event.keyCode == 65)
 		{
 			Thita -= Math.PI / 90;
@@ -170,7 +173,7 @@ while (true)
 					c=surfaces.pointA[1]-slope*surfaces.pointB[1];
 				}
 				let temp_vect1=[Math.cos(Alpha),Math.sin(Alpha)];
-				let temp_vect2=0;
+				let temp_vect2=[];
 				if(slope!=inf)
 				{
 					temp_vect2=[1,-1/slope];
@@ -179,7 +182,7 @@ while (true)
 				{
 					temp_vect2=[1,0];
 				}
-				angle_from_normal=angle_between(vect1,vect2);
+				angle_from_normal=angle_between(temp_vect1,temp_vect2);
 				if(slope!=inf)
 				{
 					normal=Math.abs((slope*x-y+c)/Math.sqrt(slope*slope+1));
