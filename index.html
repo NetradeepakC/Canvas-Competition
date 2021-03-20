@@ -31,6 +31,7 @@
     let width;
     let height;
     let running;
+    let canvas;
     // Declare all global variables here
     function setup() {
         // Initialize variables here
@@ -51,6 +52,7 @@
         width = canvas.offsetWidth;
         height = canvas.offsetHeight;
         running = true;
+        ctx = canvas.getContext("2d");
     }
 
     // Declare custom functions here
@@ -128,7 +130,6 @@
             break;
         }
         console.log("!")
-        const ctx = canvas.getContext("2d");
         ctx.beginPath();
         column_no = 0;
         for (Alpha = Thita - hFOV / 2; Alpha < Thita + hFOV / 2; Alpha += Math.PI / 180) {
