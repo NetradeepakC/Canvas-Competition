@@ -28,12 +28,6 @@
     let number_of_surfaces;
     let circum_radius;
     let hieght_of_wall;
-    for (let i = 0; i < 4; i++) {
-        let pointA = [circum_radius * Math.sin(Math.PI * i / 4), circum_radius * Math.cos(Math.PI * i / 4)];
-        let pointB = [circum_radius * Math.sin(Math.PI * (i + 1) / 4), circum_radius * Math.cos(Math.PI * (i + 1) / 4)];
-        surfaces[i] = new surface(pointA, pointB);
-    }
-    const canvas = document.getElementById("canvasArea1");
     let width;
     let height;
     let running;
@@ -103,6 +97,7 @@
     var timeStep = 50;
     canvas.startMain(timeStep);
     canvas.setupFunction = setup;
+    canvas.setupFunction();
     while (true) {
         document.addEventListener("keydown", function (event) {
             if (event.keyCode == 65) {
@@ -132,9 +127,9 @@
         if (!running) {
             break;
         }
+        console.log("!")
         const ctx = canvas.getContext("2d");
         ctx.beginPath();
-        ctx.moveTo(0, 0);
         column_no = 0;
         for (Alpha = Thita - hFOV / 2; Alpha < Thita + hFOV / 2; Alpha += Math.PI / 180) {
             let Aplha1 = Alpha;
