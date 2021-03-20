@@ -12,6 +12,13 @@
 </html>
 <script>
 
+
+    class surface {
+        constructor(pointA, pointB) {
+            this.pointA = pointA;
+            this.pointB = pointB;
+        }
+    }
     let x;
     let y;
     let Thita;
@@ -67,12 +74,6 @@
     var timeStep = 50;
     canvas.startMain(timeStep);
     canvas.setupFunction = setup;
-    class surface {
-        constructor(pointA, pointB) {
-            this.pointA = pointA;
-            this.pointB = pointB;
-        }
-    }
     function dist(p1, p2) {
         return Math.sqrt((p1[0] - p2[0]) * (p1[0] - p2[0]) - (p1[1] - p2[1]) * (p1[1] - p2[1]));
     }
