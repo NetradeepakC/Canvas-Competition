@@ -39,6 +39,10 @@ function find_angle(p1,p2)
 	}
 	return angle1;
 }
+function angle_between(A,B)
+{
+	return Math.asin((A[1]*B[1]+A[0]*B[0])/Math.sqrt(A[1]*A[1]+A[0]*A[0])/Math.sqrt(B[1]*B[1]+B[0]*B[0]));
+}
 let x = 0;
 let y = 0;
 let Thita = 0;
@@ -58,7 +62,9 @@ for (let i = 0; i < 4; i++)
 const canvas = documant.getElementById("canvas");
 let width = canvas.offsetWidth;
 let height = canvas.offsetHeight;
-while (true) {
+let running=true;
+while (true)
+{
 	document.addEventListener("keydown", function (event) {
 		if (event.keyCode == 65)
 		{
@@ -88,13 +94,18 @@ while (true) {
 		}
 		else if (event.keyCode == 27)
 		{
-			break;
+			running=false;
 		}
 	});
+	if(!running)
+	{
+		break;
+	}
 	const ctx = canvas.getContext("2d");
 	ctx.beginPath();
 	ctx.moveTo(0,0);
-	for(Alpha=Thita-hFOV/2;Alpha<Thita+hFOV/2;Alpha++)
+	column_no=0;
+	for(Alpha=Thita-hFOV/2;Alpha<Thita+hFOV/2;Alpha+=Math.PI/180)
 	{
 		let Aplha1=Alpha;
 		if(Alpha>Math.PI)
@@ -105,10 +116,11 @@ while (true) {
 		{
 			Alpha1=Alpha+Math.PI;
 		}
-		dist_min=-1;
+		let dist_min=-1;
 		let slope=-1;
 		let c=-1;
 		let normal=-1;
+		let distance_from_player=-1;
 		let angle_from_normal=-1;
 		for(i=0;i<surfaces.length;i++)
 		{
@@ -141,30 +153,61 @@ while (true) {
 			}
 			if(intercept)
 			{
-				current_dist=dist( [ surfaces[i].pointA[0]+surfaces[i].pointB[0]-2*x , surfaces[i].pointA[1]+surfaces[i].pointB[1]-2*y ] , [0,0] )
-				if(dist_min==-1)
+				if(surfaces[i].pointB[0]!=surfaces[i].pointA[0])
 				{
-					dist_min=current_dist;
 					slope=(surfaces[i].pointB[1]-surfaces[i].pointA[1])/(surfaces[i].pointB[0]-surfaces[i].pointA[0]);
-					c=surfaces.pointA[1]-slope*surfaces.pointB[1];
 				}
 				else
 				{
-					dist_min=Math.min(dist_min,current_dist);
-					slope=(surfaces[i].pointB[1]-surfaces[i].pointA[1])/(surfaces[i].pointB[0]-surfaces[i].pointA[0]);
+					slope=inf
+				}
+				if(slope=inf)
+				{
+					c=inf;
+				}
+				else
+				{
 					c=surfaces.pointA[1]-slope*surfaces.pointB[1];
 				}
+				let temp_vect1=[Math.cos(Alpha),Math.sin(Alpha)];
+				let temp_vect2=0;
+				if(slope!=inf)
+				{
+					temp_vect2=[1,-1/slope];
+				}
+				else
+				{
+					temp_vect2=[1,0];
+				}
+				angle_from_normal=angle_between(vect1,vect2);
+				if(slope!=inf)
+				{
+					normal=Math.abs((slope*x-y+c)/Math.sqrt(slope*slope+1));
+					distance_from_player=normal/Math.sin(angle_from_normal);
+				}
+				else
+				{
+					normal=Math.abs(surfaces[i].pointA[0]-x);
+					distance_from_player=normal/Math.sin(angle_from_normal);
+				}
+				dist_min=Math.min(distance_from_player,dist_min);
 			}
 		}
-		if(dist_min==-1)
+		if(dist_min==-1||dist_min>256)
 		{
-			brightness=255
+			brightness=255;
+			height_of_drawn_column=hieght;
 		}
 		else
 		{
-			brightness=255*(1-dist_min/256);
-			normal=(slope*x-y+c)/Math.sqrt(slope*slope+1);
-			angle=Math.abs();
+			brightness=255(1-dist_min/256);
+			height_of_drawn_column=height*Math.atan(height_of_wall/dist_min)/vFOV;
 		}
+		ctx.lineWidth=10;
+		ctx.strokeStyle="#"+brightness.toString(16)+brightness.toString(16)+brightness.toString(16);
+		ctx.moveTo(column_number,height/2-height_of_drawn_column);
+		ctx.lineTo(column_number,height/2+height_of_drawn_column);
+		column_number+=width/(hFOV*180/Math.PI);
 	}
+	ctx.stroke();
 }
