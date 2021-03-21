@@ -77,10 +77,10 @@ while(running):
         pressed_keys=pygame.key.get_pressed()
         if pressed_keys[pygame.K_w]:
             playerX-=math.cos(Thita)*circum_radius/128
-            playerY+=math.sin(Thita)*circum_radius/128
+            playerY-=math.sin(Thita)*circum_radius/128
         if pressed_keys[pygame.K_s]:
             playerX+=math.cos(Thita)*circum_radius/128
-            playerY-=math.sin(Thita)*circum_radius/128
+            playerY+=math.sin(Thita)*circum_radius/128
         if pressed_keys[pygame.K_a]:
             Thita-=math.pi/90
             if(Thita<=-math.pi):
@@ -92,6 +92,7 @@ while(running):
     
     column_number=0
     Alpha=Thita-hFOV/2
+    print(Thita)
     while(Alpha<=Thita+hFOV/2):
 
         Alpha1=Alpha
@@ -168,7 +169,7 @@ while(running):
             height_of_drawn_column=height*(height_of_wall/2/dist_min)
         
         
-        pygame.draw.line(screen,(0,brightness,0),((column_number),(height/2-height_of_drawn_column)),((column_number),(height/2+height_of_drawn_column)),int(width*math.pi/180/hFOV)+1)
+        pygame.draw.line(screen,(0,brightness,brightness/2),((column_number),(height/2-height_of_drawn_column)),((column_number),(height/2+height_of_drawn_column)),int(width*math.pi/180/hFOV)+1)
         column_number+=width*math.pi/180/hFOV
         
         Alpha+=math.pi/180
