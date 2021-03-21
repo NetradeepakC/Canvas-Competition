@@ -33,6 +33,7 @@
     let height;
     let canvas;
     let ctx;
+    canvas = document.getElementById("canvasArea1")
     function setup() {
         // Initialize variables here
         x = 0;
@@ -59,6 +60,7 @@
 
     // Function while will be called repeatedly 
     function main() {
+        canvas.clear();
         document.addEventListener("keydown", function (event) {
             if (event.keyCode == 65) {
                 Thita -= Math.PI / 90;
@@ -100,7 +102,7 @@
             let normal = -1;
             let distance_from_player = -1;
             let angle_from_normal = -1;
-            for (i = 0; i < surfaces.length; i++) {
+            for (let i = 0; i < surfaces.length; i++) {
                 let angle1 = find_angle(surfaces[i].pointA, [x, y]);
                 let angle2 = find_angle(surfaces[i].pointB, [x, y]);
                 let intercept = false;
@@ -168,7 +170,6 @@
             ctx.lineTo(column_number, height / 2 + height_of_drawn_column);
             column_number += width / (hFOV * 180 / Math.PI);
         }
-        canvas.clear();
         ctx.stroke();
 
     }
