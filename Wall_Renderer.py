@@ -42,7 +42,7 @@ playerY = 0
 Thita=0
 number_of_surfaces = 4
 surfaces = []
-hFOV = math.pi
+hFOV = 90*math.pi/180
 vFOV = 90*math.pi/180
 circum_radius = 128
 height_of_wall = circum_radius/4
@@ -75,10 +75,10 @@ while(running):
         if event.type==pygame.QUIT:
             running=False
         pressed_keys=pygame.key.get_pressed()
-        if pressed_keys[pygame.K_w]:
+        if pressed_keys[pygame.K_w] and abs(playerX-math.cos(Thita)*circum_radius/128)+abs(playerY-math.sin(Thita)*circum_radius/128)<circum_radius:
             playerX-=math.cos(Thita)*circum_radius/128
             playerY-=math.sin(Thita)*circum_radius/128
-        if pressed_keys[pygame.K_s]:
+        if pressed_keys[pygame.K_s] and abs(playerX+math.cos(Thita)*circum_radius/128)+abs(playerY+math.sin(Thita)*circum_radius/128)<circum_radius:
             playerX+=math.cos(Thita)*circum_radius/128
             playerY+=math.sin(Thita)*circum_radius/128
         if pressed_keys[pygame.K_a]:
@@ -97,9 +97,9 @@ while(running):
 
         Alpha1=Alpha
         if(Alpha>math.pi):
-            Alpha1-=math.pi
+            Alpha1-=2*math.pi
         elif(Alpha<=-math.pi):
-            Alpha1+=math.pi
+            Alpha1+=2*math.pi
 
         dist_min=-1
         slope=-1
@@ -107,11 +107,9 @@ while(running):
         normal=-1
         distance_from_player=-1
         angle_from_normal=-1
-        print("\n")
         for i in surfaces:
             angle1=find_angle(i.pointA,[playerX,playerY])
             angle2=find_angle(i.pointB,[playerX,playerY])
-            print(angle1,"\t\t\t",angle2,"\t\t\t",Alpha,"\t\t\t",Alpha1,"\t\t\t",abs(angle1-angle2))
             intercept=False
             if(abs(angle1-angle2)<math.pi):
                 if( ( Alpha1>angle1 and Alpha1<angle2 )or( Alpha1<angle1 and Alpha1>angle2 ) ):
@@ -123,7 +121,6 @@ while(running):
                 else:
                     if(Alpha1>angle2 or Alpha1<angle1):
                         intercept=True
-            print(intercept)
             if(intercept):
                 if(intercept):
                     if( not i.pointB[0]==i.pointA[0] ):
@@ -134,7 +131,7 @@ while(running):
                         c="Inf"
                     else:
                         c=i.pointA[1]-slope*i.pointA[0]
-                    temp_vect1=[math.cos(Alpha),math.sin(Alpha)]
+                    temp_vect1=[math.cos(Alpha1),math.sin(Alpha1)]
                     temp_vect2=[]
                     if(slope==0):
                         if(i.pointA[1]>playerY):
@@ -154,22 +151,20 @@ while(running):
                         distance_from_player=normal/abs(math.cos((angle_from_normal)))
                     else:
                         normal=abs((slope*playerX-playerY+c)/math.sqrt(slope*slope+1))
-                        print("#",angle_from_normal)
                         distance_from_player=normal/abs(math.cos((angle_from_normal)))
                     if(dist_min>=0):
                     	dist_min=min(distance_from_player,dist_min)
                     else:
                         dist_min=distance_from_player
-            print(normal,distance_from_player)
-        if(dist_min<=0 or dist_min>=256):
+        if(dist_min<=0 or dist_min>256):
             brightness=255
             height_of_drawn_column=0
         else:
-            brightness=255-dist_min
+            brightness=dist_min
             height_of_drawn_column=height*(height_of_wall/2/dist_min)
         
         
-        pygame.draw.line(screen,(0,brightness,brightness/2),((column_number),(height/2-height_of_drawn_column)),((column_number),(height/2+height_of_drawn_column)),int(width*math.pi/180/hFOV)+1)
+        pygame.draw.line(screen,(0,brightness,0),((column_number),(height/2-height_of_drawn_column)),((column_number),(height/2+height_of_drawn_column)),int(width*math.pi/180/hFOV)+1)
         column_number+=width*math.pi/180/hFOV
         
         Alpha+=math.pi/180
